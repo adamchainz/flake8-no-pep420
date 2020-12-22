@@ -12,12 +12,17 @@ class NoPep420Checker:
     version = version("flake8-no-pep420")
 
     def __init__(self, tree, filename):
+        self._tree = tree
         self._path = Path(filename)
 
     def run(self):
         if not (self._path.parent / "__init__.py").exists():
+            if self._tree.body:
+                lineno = self._tree.body[0].lineno
+            else:
+                lineno = 1
             yield (
-                1,
+                lineno,
                 0,
                 "INP001 File is part of an implicit namespace package.",
                 type(self),
