@@ -40,11 +40,33 @@ def test_INP001_pass(flake8dir):
     assert result.out_lines == []
 
 
-def test_INP001_fail(flake8dir):
+def test_INP001_fail_empty(flake8dir):
     flake8dir.make_file("dir/example.py", "")
     result = flake8dir.run_flake8()
     assert result.out_lines == [
         "./dir/example.py:1:1: INP001 File is part of an implicit namespace package."
+    ]
+
+
+def test_INP001_fail_nonempty(flake8dir):
+    flake8dir.make_file("dir/example.py", "print('hi')")
+    result = flake8dir.run_flake8()
+    assert result.out_lines == [
+        "./dir/example.py:1:1: INP001 File is part of an implicit namespace package."
+    ]
+
+
+def test_INP001_fail_shebang(flake8dir):
+    flake8dir.make_file(
+        "dir/example.py",
+        """
+        #!/bin/env/python
+        print('hi')
+        """,
+    )
+    result = flake8dir.run_flake8()
+    assert result.out_lines == [
+        "./dir/example.py:2:1: INP001 File is part of an implicit namespace package."
     ]
 
 
