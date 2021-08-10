@@ -1,6 +1,6 @@
 import re
 import sys
-import textwrap
+from textwrap import dedent
 
 import pytest
 
@@ -11,20 +11,20 @@ else:
 
 
 @pytest.fixture
-def flake8dir(flake8dir):
-    flake8dir.make_setup_cfg(
-        textwrap.dedent(
+def flake8_path(flake8_path):
+    (flake8_path / "setup.cfg").write_text(
+        dedent(
             """\
             [flake8]
             select = INP
             """
         )
     )
-    yield flake8dir
+    yield flake8_path
 
 
-def test_version(flake8dir):
-    result = flake8dir.run_flake8(["--version"])
+def test_version(flake8_path):
+    result = flake8_path.run_flake8(["--version"])
     version_regex = r"flake8-no-pep420:( )*" + version("flake8-no-pep420")
     unwrapped = "".join(result.out_lines)
     assert re.search(version_regex, unwrapped)
@@ -33,45 +33,50 @@ def test_version(flake8dir):
 # INP001
 
 
-def test_INP001_pass(flake8dir):
-    flake8dir.make_file("dir/__init__.py", "")
-    flake8dir.make_file("dir/example.py", "")
-    result = flake8dir.run_flake8()
+def test_INP001_pass(flake8_path):
+    (flake8_path / "dir").mkdir()
+    (flake8_path / "dir" / "__init__.py").write_text("\n")
+    (flake8_path / "dir" / "example.py").write_text("\n")
+    result = flake8_path.run_flake8()
     assert result.out_lines == []
 
 
-def test_INP001_fail_empty(flake8dir):
-    flake8dir.make_file("dir/example.py", "")
-    result = flake8dir.run_flake8()
+def test_INP001_fail_empty(flake8_path):
+    (flake8_path / "dir").mkdir()
+    (flake8_path / "dir" / "example.py").write_text("\n")
+    result = flake8_path.run_flake8()
     assert result.out_lines == [
         "./dir/example.py:1:1: INP001 File is part of an implicit namespace package."
     ]
 
 
-def test_INP001_fail_nonempty(flake8dir):
-    flake8dir.make_file("dir/example.py", "print('hi')")
-    result = flake8dir.run_flake8()
+def test_INP001_fail_nonempty(flake8_path):
+    (flake8_path / "dir").mkdir()
+    (flake8_path / "dir" / "example.py").write_text("print('hi')\n")
+    result = flake8_path.run_flake8()
     assert result.out_lines == [
         "./dir/example.py:1:1: INP001 File is part of an implicit namespace package."
     ]
 
 
-def test_INP001_fail_shebang(flake8dir):
-    flake8dir.make_file(
-        "dir/example.py",
-        """
-        #!/bin/env/python
-        print('hi')
-        """,
+def test_INP001_fail_shebang(flake8_path):
+    (flake8_path / "dir").mkdir()
+    (flake8_path / "dir" / "example.py").write_text(
+        dedent(
+            """\
+            #!/bin/env/python
+            print('hi')
+            """
+        )
     )
-    result = flake8dir.run_flake8()
+    result = flake8_path.run_flake8()
     assert result.out_lines == [
         "./dir/example.py:2:1: INP001 File is part of an implicit namespace package."
     ]
 
 
-def test_INP001_ignored(flake8dir):
-    flake8dir.make_file("dir/__init__.py", "")
-    flake8dir.make_file("dir/example.py", "import os  # noqa: INP001")
-    result = flake8dir.run_flake8()
+def test_INP001_ignored(flake8_path):
+    (flake8_path / "dir").mkdir()
+    (flake8_path / "dir" / "example.py").write_text("import os  # noqa: INP001")
+    result = flake8_path.run_flake8()
     assert result.out_lines == []
