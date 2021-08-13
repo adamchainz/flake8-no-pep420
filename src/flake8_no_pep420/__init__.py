@@ -1,5 +1,7 @@
+import ast
 import sys
 from pathlib import Path
+from typing import Any, Generator, Tuple, Type
 
 if sys.version_info >= (3, 8):
     from importlib.metadata import version
@@ -11,11 +13,11 @@ class NoPep420Checker:
     name = "flake8-no-pep420"
     version = version("flake8-no-pep420")
 
-    def __init__(self, tree, filename):
+    def __init__(self, tree: ast.Module, filename: str) -> None:
         self._tree = tree
         self._path = Path(filename)
 
-    def run(self):
+    def run(self) -> Generator[Tuple[int, int, str, Type[Any]], None, None]:
         if not (self._path.parent / "__init__.py").exists():
             if self._tree.body:
                 lineno = self._tree.body[0].lineno
