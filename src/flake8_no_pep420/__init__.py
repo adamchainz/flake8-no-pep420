@@ -18,6 +18,9 @@ class NoPep420Checker:
         self._path = Path(filename)
 
     def run(self) -> Generator[Tuple[int, int, str, Type[Any]], None, None]:
+        if self._path.name == "__init__.py":
+            return
+
         if not (self._path.parent / "__init__.py").exists():
             if len(self._lines) > 0 and self._lines[0].startswith("#!"):
                 lineno = 2
