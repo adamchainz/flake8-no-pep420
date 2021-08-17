@@ -2,6 +2,9 @@
 History
 =======
 
+1.1.1 (2021-08-17)
+------------------
+
 * Avoid checking the AST to determine the error line number.
 
 1.1.0 (2021-05-10)
