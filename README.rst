@@ -60,10 +60,15 @@ Implicit namespace packages are folders of Python files without an ``__init__.py
 They’re valid and importable, but unfortunately they’re silently not searched by *many* tools, like:
 
 * unittest test discovery (and by extension, Django’s test runner)
-* `coverage.py <https://github.com/nedbat/coveragepy/issues/1024>`__
-* mypy without its `--namespace-packages option <https://mypy.readthedocs.io/en/latest/command_line.html#import-discovery>`__
+* `Coverage.py <https://github.com/nedbat/coveragepy/issues/1024>`__
+* Mypy without its `--namespace-packages option <https://mypy.readthedocs.io/en/latest/command_line.html#import-discovery>`__
 
-Such silent failure leads to a false sense of security.
+Such silent failure leads to a false sense of security:
+
+* Tests may look legitimate but never run
+* Code may be untested but not affect coverage statistics
+* Types may never be checked
+
 PEP-420’s algorithm is non-trivial which is probably why such tools haven’t (yet) implemented it.
 
 Rules
