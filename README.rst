@@ -57,10 +57,10 @@ Rationale
 =========
 
 Implicit namespace packages are folders of Python files without an ``__init__.py``.
-They’re valid and importable, but unfortunately they’re not discovered by many code quality tools:
+They’re valid and importable, but unfortunately they’re silently not searched by *many* tools, like:
 
+* unittest test discovery (and by extension, Django’s test runner)
 * `coverage.py <https://github.com/nedbat/coveragepy/issues/1024>`__
-* Django’s test runner
 * mypy without its `--namespace-packages option <https://mypy.readthedocs.io/en/latest/command_line.html#import-discovery>`__
 
 Such silent failure leads to a false sense of security.
