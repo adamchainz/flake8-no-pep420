@@ -71,12 +71,29 @@ def test_INP001_fail_shebang(flake8_path):
     )
     result = flake8_path.run_flake8()
     assert result.out_lines == [
-        "./dir/example.py:2:1: INP001 File is part of an implicit namespace package."
+        "./dir/example.py:1:1: INP001 File is part of an implicit namespace package."
     ]
 
 
 def test_INP001_ignored(flake8_path):
     (flake8_path / "dir").mkdir()
     (flake8_path / "dir" / "example.py").write_text("import os  # noqa: INP001")
+    result = flake8_path.run_flake8()
+    assert result.out_lines == []
+
+
+def test_INP001_per_file_ignores(flake8_path):
+    (flake8_path / "setup.cfg").write_text(
+        dedent(
+            """\
+            [flake8]
+            select = INP
+            per-file-ignores =
+                dir/example.py:INP001
+            """
+        )
+    )
+    (flake8_path / "dir").mkdir()
+    (flake8_path / "dir" / "example.py").write_text("import os")
     result = flake8_path.run_flake8()
     assert result.out_lines == []
