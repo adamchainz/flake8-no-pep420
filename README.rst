@@ -56,7 +56,7 @@ Check out my book `Speed Up Your Django Tests <https://gumroad.com/l/suydt>`__ w
 Rationale
 =========
 
-Implicit namespace packages are folders of Python files without an ``__init__.py``.
+Implicit namespace packages are directories of Python files without an ``__init__.py``.
 They’re valid and importable, but unfortunately they’re silently ignored by *many* tools, like:
 
 * unittest test discovery (and by extension, Django’s test runner)
@@ -77,8 +77,17 @@ Rules
 INP001: File is part of an implicit namespace package.
 ------------------------------------------------------
 
-flake8-no-pep420 will trigger this on the first line of any file that sits in a folder without a `__init__.py` file.
+flake8-no-pep420 will trigger this on the first line of any file that sits in a directory without a `__init__.py` file.
 
-Often projects have a few root files not in packages, for which an ``__init__.py`` file should not be added.
-For example on a Django project there’s the ``manage.py`` file.
-In these cases you should add ``# noqa: INP001`` on the first line of the file.
+Often projects have a few root files *not* in packages, for which an ``__init__.py`` file should not be added.
+For example, Django projects normally have a ``manage.py`` file in the root of their repository.
+In these cases you can ignore the ``INP001`` error.
+It’s possible to use ``# noqa: INP001`` to ignore the error in-line, but this isn’t possible if the first line is a `shebang <https://en.wikipedia.org/wiki/Shebang_(Unix)>`__, such as in Django’s ``manage.py``.
+As such, it’s preferable to use Flake8’s `per-file-ignores option <https://flake8.pycqa.org/en/latest/user/options.html#cmdoption-flake8-per-file-ignores>`__, for example in ``setup.cfg``:
+
+.. code-block:: ini
+
+    [flake8]
+    # ...
+    per-file-ignores =
+        manage.py:INP001

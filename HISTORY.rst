@@ -2,6 +2,10 @@
 History
 =======
 
+* Remove the “first logical line” behaviour, which is fragile.
+  Flake8’s ``per-file-ignores`` option provides an alternative for files with shebangs.
+  The README provides more detail.
+
 * Remove upper bound on Flake8 version.
 
 1.2.0 (2021-10-11)
