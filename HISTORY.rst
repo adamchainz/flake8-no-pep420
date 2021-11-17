@@ -2,6 +2,9 @@
 History
 =======
 
+2.0.0 (2021-11-17)
+------------------
+
 * Remove the “first logical line” behaviour, which is fragile.
   Flake8’s ``per-file-ignores`` option provides an alternative for files with shebangs.
   The README provides more detail.
