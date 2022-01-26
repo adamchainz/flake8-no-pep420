@@ -34,6 +34,8 @@ def test_version(flake8_path):
 
 # INP001
 
+INP001_msg = "INP001 File is part of an implicit namespace package. Add an __init__.py?"
+
 
 def test_INP001_pass(flake8_path):
     (flake8_path / "dir").mkdir()
@@ -47,18 +49,14 @@ def test_INP001_fail_empty(flake8_path):
     (flake8_path / "dir").mkdir()
     (flake8_path / "dir" / "example.py").write_text("\n")
     result = flake8_path.run_flake8()
-    assert result.out_lines == [
-        "./dir/example.py:1:1: INP001 File is part of an implicit namespace package."
-    ]
+    assert result.out_lines == [f"./dir/example.py:1:1: {INP001_msg}"]
 
 
 def test_INP001_fail_nonempty(flake8_path):
     (flake8_path / "dir").mkdir()
     (flake8_path / "dir" / "example.py").write_text("print('hi')\n")
     result = flake8_path.run_flake8()
-    assert result.out_lines == [
-        "./dir/example.py:1:1: INP001 File is part of an implicit namespace package."
-    ]
+    assert result.out_lines == [f"./dir/example.py:1:1: {INP001_msg}"]
 
 
 def test_INP001_fail_shebang(flake8_path):
@@ -72,9 +70,7 @@ def test_INP001_fail_shebang(flake8_path):
         )
     )
     result = flake8_path.run_flake8()
-    assert result.out_lines == [
-        "./dir/example.py:1:1: INP001 File is part of an implicit namespace package."
-    ]
+    assert result.out_lines == [f"./dir/example.py:1:1: {INP001_msg}"]
 
 
 def test_INP001_ignored(flake8_path):

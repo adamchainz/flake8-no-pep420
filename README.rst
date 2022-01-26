@@ -62,16 +62,16 @@ PEP-420’s algorithm is non-trivial which is probably why such tools haven’t 
 Rules
 =====
 
-INP001: File is part of an implicit namespace package.
-------------------------------------------------------
+INP001: File is part of an implicit namespace package. Add __init__.py?
+-----------------------------------------------------------------------
 
-flake8-no-pep420 will trigger this on the first line of any file that sits in a directory without a `__init__.py` file.
+flake8-no-pep420 will trigger this on the first line of any file that sits in a directory without an ``__init__.py`` file.
 
 Often projects have a few root files *not* in packages, for which an ``__init__.py`` file should not be added.
 For example, Django projects normally have a ``manage.py`` file in the root of their repository.
 In these cases you can ignore the ``INP001`` error.
 It’s possible to use ``# noqa: INP001`` to ignore the error in-line, but this isn’t possible if the first line is a `shebang <https://en.wikipedia.org/wiki/Shebang_(Unix)>`__, such as in Django’s ``manage.py``.
-As such, it’s preferable to use Flake8’s `per-file-ignores option <https://flake8.pycqa.org/en/latest/user/options.html#cmdoption-flake8-per-file-ignores>`__, for example in ``setup.cfg``:
+In such cases it’s preferable to use Flake8’s `per-file-ignores option <https://flake8.pycqa.org/en/latest/user/options.html#cmdoption-flake8-per-file-ignores>`__, for example in ``setup.cfg``:
 
 .. code-block:: ini
 

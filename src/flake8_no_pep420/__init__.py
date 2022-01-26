@@ -29,6 +29,9 @@ class NoPep420Checker:
             yield (
                 1,
                 0,
-                "INP001 File is part of an implicit namespace package.",
+                (
+                    "INP001 File is part of an implicit namespace package."
+                    + " Add an __init__.py?"
+                ),
                 type(self),
             )
