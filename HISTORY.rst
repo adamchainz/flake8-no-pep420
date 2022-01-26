@@ -2,6 +2,8 @@
 History
 =======
 
+* Extend message with “Add an ``__init__.py``?” to hint how to fix the issue.
+
 2.1.0 (2022-01-10)
 ------------------
 
