@@ -2,7 +2,7 @@
 flake8-no-pep420
 ================
 
-.. image:: https://img.shields.io/github/workflow/status/adamchainz/flake8-no-pep420/CI/main?style=for-the-badge
+.. image:: https://img.shields.io/github/actions/workflow/status/adamchainz/flake8-no-pep420/main.yml?branch=main&style=for-the-badge
    :target: https://github.com/adamchainz/flake8-no-pep420/actions?workflow=CI
 
 .. image:: https://img.shields.io/pypi/v/flake8-no-pep420.svg?style=for-the-badge
