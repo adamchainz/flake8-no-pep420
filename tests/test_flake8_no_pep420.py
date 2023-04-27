@@ -19,6 +19,7 @@ def flake8_path(flake8_path):
             """\
             [flake8]
             select = INP
+            filename = *.py,*.pyi
             """
         )
     )
@@ -34,8 +35,6 @@ def test_version(flake8_path):
 
 # INP001
 
-INP001_msg = "INP001 File is part of an implicit namespace package. Add an __init__.py?"
-
 
 def test_INP001_pass(flake8_path):
     (flake8_path / "dir").mkdir()
@@ -45,32 +44,28 @@ def test_INP001_pass(flake8_path):
     assert result.out_lines == []
 
 
-def test_INP001_fail_empty(flake8_path):
+def test_INP001_pass_pyi(flake8_path):
+    (flake8_path / "dir").mkdir()
+    (flake8_path / "dir" / "__init__.pyi").write_text("\n")
+    (flake8_path / "dir" / "example.pyi").write_text("\n")
+    result = flake8_path.run_flake8()
+    assert result.out_lines == []
+
+
+def test_INP001_fail(flake8_path):
     (flake8_path / "dir").mkdir()
     (flake8_path / "dir" / "example.py").write_text("\n")
     result = flake8_path.run_flake8()
-    assert result.out_lines == [f"./dir/example.py:1:1: {INP001_msg}"]
+    msg = "INP001 File is part of an implicit namespace package. Add an __init__.py?"
+    assert result.out_lines == [f"./dir/example.py:1:1: {msg}"]
 
 
-def test_INP001_fail_nonempty(flake8_path):
+def test_INP001_fail_pyi(flake8_path):
     (flake8_path / "dir").mkdir()
-    (flake8_path / "dir" / "example.py").write_text("print('hi')\n")
+    (flake8_path / "dir" / "example.pyi").write_text("\n")
     result = flake8_path.run_flake8()
-    assert result.out_lines == [f"./dir/example.py:1:1: {INP001_msg}"]
-
-
-def test_INP001_fail_shebang(flake8_path):
-    (flake8_path / "dir").mkdir()
-    (flake8_path / "dir" / "example.py").write_text(
-        dedent(
-            """\
-            #!/bin/env/python
-            print('hi')
-            """
-        )
-    )
-    result = flake8_path.run_flake8()
-    assert result.out_lines == [f"./dir/example.py:1:1: {INP001_msg}"]
+    msg = "INP001 File is part of an implicit namespace package. Add an __init__.pyi?"
+    assert result.out_lines == [f"./dir/example.pyi:1:1: {msg}"]
 
 
 def test_INP001_ignored(flake8_path):

@@ -25,14 +25,16 @@ class NoPep420Checker:
         if basename == "__init__.py":
             return
 
-        init_name = os.path.join(dirname, "__init__.py")
+        ext = os.path.splitext(basename)[1] or ".py"
+        init = f"__init__{ext}"
+        init_name = os.path.join(dirname, init)
         if not os.path.exists(init_name):
             yield (
                 1,
                 0,
                 (
                     "INP001 File is part of an implicit namespace package."
-                    + " Add an __init__.py?"
+                    + f" Add an {init}?"
                 ),
                 type(self),
             )
