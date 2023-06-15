@@ -2,8 +2,12 @@
 Changelog
 =========
 
+* Support Python 3.12.
+
 2.5.0 (2023-06-15)
 ------------------
+
+* Empty release, made by mistake.
 
 2.4.0 (2023-04-27)
 ------------------
