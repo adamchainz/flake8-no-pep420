@@ -15,7 +15,7 @@ flake8-no-pep420
    :target: https://github.com/pre-commit/pre-commit
    :alt: pre-commit
 
-A `flake8 <https://flake8.readthedocs.io/en/latest/index.html>`_ plugin to ban `PEP-420 <https://www.python.org/dev/peps/pep-0420/>`__ implicit namespace packages.
+A `flake8 <https://flake8.readthedocs.io/en/latest/>`_ plugin to ban `PEP-420 <https://www.python.org/dev/peps/pep-0420/>`__ implicit namespace packages.
 
 Requirements
 ============
