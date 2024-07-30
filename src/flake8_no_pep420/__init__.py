@@ -14,7 +14,7 @@ class NoPep420Checker:
     def __init__(self, tree: ast.AST, filename: str) -> None:
         self._filename = filename
 
-    def run(self) -> Generator[tuple[int, int, str, type[Any]], None, None]:
+    def run(self) -> Generator[tuple[int, int, str, type[Any]]]:
         dirname, basename = os.path.split(self._filename)
 
         if basename == "__init__.py":
