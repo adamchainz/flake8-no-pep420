@@ -6,7 +6,7 @@ requires = [
 
 [project]
 name = "flake8-no-pep420"
-version = "2.7.0"
+version = "2.8.0"
 description = "A flake8 plugin to ban PEP-420 implicit namespace packages."
 readme = "README.rst"
 keywords = [
