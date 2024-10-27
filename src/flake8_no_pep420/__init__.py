@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import ast
 import os
+from collections.abc import Generator
 from importlib.metadata import version
 from typing import Any
-from typing import Generator
 
 
 class NoPep420Checker:
